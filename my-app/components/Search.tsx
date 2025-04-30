@@ -1,40 +1,60 @@
-import { View, Image, TextInput ,TouchableOpacity} from 'react-native';
+import { View, Image, TextInput, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { icons } from '@/constants/icons';
+import { BlurView } from 'expo-blur';
 
 const Search = () => {
   const [searchValue, setSearchValue] = useState('');
 
   return (
-    <View className="flex-1 items-center justify-center bg-[#0A032A] px-6">
-      <View
-        className="w-full max-w-md bg-[#1E1B2E] flex-row items-center justify-between rounded-full px-4 py-3"
+    <View className="w-full items-center px-6 mt-6 p-5">
+      <BlurView
+        intensity={50}
+        tint="dark"
         style={{
-          shadowColor: '#C084FC',
-          shadowOpacity: 0.4,
-          shadowOffset: { width: 0, height: 6 },
-          shadowRadius: 10,
-          borderWidth: 1,
-          borderColor: '#C084FC40', 
+          width: '100%',
+          maxWidth: 400,
+          borderRadius: 50,
+          overflow: 'hidden',
+          backgroundColor: 'rgba(30, 27, 46, 0.7)',
+          borderWidth: 1.5,
+          borderColor: '#C084FC88',
+          paddingHorizontal: 20,
+          paddingVertical: 14,
         }}
       >
-        <TextInput
-          placeholder="Search for something..."
-          value={searchValue}
-          onChangeText={setSearchValue}
-          placeholderTextColor="#cfcfff"
-          className="flex-1 mr-3 text-white font-semibold text-base"
-        />
-
-        <TouchableOpacity>
-          <Image
-            source={icons.search}
-            className="w-5 h-5"
-            resizeMode="contain"
-            tintColor="#C084FC"
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <TextInput
+            placeholder="Search the universe..."
+            value={searchValue}
+            onChangeText={setSearchValue}
+            placeholderTextColor="#E9D5FF"
+            style={{
+              flex: 1,
+              fontSize: 16,
+              fontWeight: '600',
+              color: '#ffffff',
+              paddingRight: 10,
+            }}
           />
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity activeOpacity={0.7}>
+            <Image
+              source={icons.search}
+              style={{
+                width: 22,
+                height: 22,
+                tintColor: '#E879F9',
+              }}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+        </View>
+      </BlurView>
     </View>
   );
 };

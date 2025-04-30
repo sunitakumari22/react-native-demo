@@ -56,7 +56,7 @@ const _layout = () => {
         },
         tabBarStyle:{
             backgroundColor:'#0f0D23',
-            borderRadius:50,
+            borderRadius:0,
             
         }
     }}
