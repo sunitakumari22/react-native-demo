@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { icons } from '@/constants/icons';
 import { BlurView } from 'expo-blur';
 
+
+
 const Search = () => {
   const [searchValue, setSearchValue] = useState('');
 
@@ -32,6 +34,7 @@ const Search = () => {
           <TextInput
             placeholder="Search the universe..."
             value={searchValue}
+          
             onChangeText={setSearchValue}
             placeholderTextColor="#E9D5FF"
             style={{

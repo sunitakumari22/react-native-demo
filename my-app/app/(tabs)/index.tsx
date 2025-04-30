@@ -1,13 +1,16 @@
 import { Text, View, Image, ScrollView } from "react-native";
 import "../global.css";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { images } from "@/constants/images";
 import { icons } from "@/constants/icons";
 import Search from "@/components/Search";
+import { useRouter } from 'expo-router';
 
 
 
 export default function Index() {
+  const router=useRouter();
+
   return (
     <View className="flex-1 bg-primary relative">
       <Image source={images.bg} className="absolute w-full h-full z-0" resizeMode="cover" />
@@ -17,7 +20,9 @@ export default function Index() {
       </View>
      
        <View className="flex-1 mt-5">
-        <Search/>
+        <Search onPress={()=>router.push("/search")}
+        placeholder="Search for a movie"
+         />
        </View>
       </ScrollView>
     </View>
