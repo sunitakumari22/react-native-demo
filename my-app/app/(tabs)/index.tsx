@@ -1,11 +1,11 @@
-import { Text, View, Image, ScrollView, ActivityIndicator, FlatList } from "react-native";
-import "../global.css";
-import { images } from "@/constants/images";
-import { icons } from "@/constants/icons";
-import Search from "@/components/Search";
+import { View, Text, Image, ActivityIndicator, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
-import useFetch from "@/services/useFetch";
-import { fetchMovies } from "@/services/api";
+import { images } from '@/constants/images';
+import { icons } from '@/constants/icons';
+import Search from '@/components/Search';
+import useFetch from '@/services/useFetch';
+import { fetchMovies } from '@/services/api';
+import MovieCard from '@/components/MovieCard';
 
 export default function Index() {
   const router = useRouter();
@@ -13,59 +13,51 @@ export default function Index() {
   const {
     data: movies,
     loading: moviesLoading,
-    error: moviesError
+    error: moviesError,
   } = useFetch(() => fetchMovies({ query: '' }));
 
   return (
-    <View className="flex-1 bg-primary relative">
-      <Image source={images.bg} className="absolute w-full h-full z-0" resizeMode="cover" />
-      <ScrollView
-        className="absolute top-10 w-full z-10"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ minHeight: "100%", paddingBottom: 10 }}
-      >
-        <View className="w-full z-10 items-center">
-          <Image source={icons.logo} className="w-12 h-10" />
+    <View style={{ flex: 1, backgroundColor: '#0D0C1D', position: 'relative' }}>
+      <Image
+        source={images.bg}
+        style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 0 }}
+        resizeMode="cover"
+      />
+
+      <View style={{ flex: 1, marginTop: 40, zIndex: 10, paddingHorizontal: 10 }}>
+        <View style={{ alignItems: 'center', marginBottom: 10 }}>
+          <Image source={icons.logo} style={{ width: 48, height: 40 }} />
         </View>
 
         {moviesLoading ? (
-          <ActivityIndicator
-            size="large"
-            color="#0000ff"
-            className="mt-10 self-center"
-          />
+          <ActivityIndicator size="large" color="#A259FF" style={{ marginTop: 30 }} />
         ) : moviesError ? (
-          <Text>Error: {moviesError.message}</Text>
+          <Text style={{ color: 'red', textAlign: 'center', marginTop: 20 }}>
+            Error: {moviesError.message}
+          </Text>
         ) : (
-          <View className="flex-1 mt-5">
+          <View style={{ flex: 1 }}>
             <Search
-              onPress={() => router.push("/search")}
+              onPress={() => router.push('/search')}
               placeholder="Search for a movie"
             />
 
-            <Text className="text-lg text-white font-bold mt-5 ml-5 mb-3">Latest Movies</Text>
+            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold', marginTop: 20, marginBottom: 10 }}>
+              Latest Movies
+            </Text>
 
             <FlatList
               data={movies}
-              renderItem={({ item }) => (
-                <Text className="text-white text-sm ">{item.title}
-                </Text>
-              )}
+              renderItem={({ item }) => <MovieCard {...item} />}
               keyExtractor={(item) => item.id.toString()}
               numColumns={3}
-              columnWrapperStyle={{
-                justifyContent:'flex-start',
-                gap:20,
-                padding:5,
-                marginBottom:10
-              }}
-              className="mt-2 pb-32"
-              scrollEnabled={false}
-
+              columnWrapperStyle={{ justifyContent: 'space-between' }}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 100 }}
             />
           </View>
         )}
-      </ScrollView>
+      </View>
     </View>
   );
 }
