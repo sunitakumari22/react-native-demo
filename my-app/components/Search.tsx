@@ -3,9 +3,12 @@ import React, { useState } from 'react';
 import { icons } from '@/constants/icons';
 import { BlurView } from 'expo-blur';
 
+interface props{
+  placeholder:string;
+  onPress?:()=>void;
+}
 
-
-const Search = () => {
+const Search = ({placeholder,onPress}:props) => {
   const [searchValue, setSearchValue] = useState('');
 
   return (
@@ -32,7 +35,7 @@ const Search = () => {
           }}
         >
           <TextInput
-            placeholder="Search the universe..."
+            placeholder={placeholder}
             value={searchValue}
           
             onChangeText={setSearchValue}
@@ -45,7 +48,7 @@ const Search = () => {
               paddingRight: 10,
             }}
           />
-          <TouchableOpacity activeOpacity={0.7}>
+          <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
             <Image
               source={icons.search}
               style={{
