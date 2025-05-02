@@ -6,9 +6,11 @@ import { BlurView } from 'expo-blur';
 interface props{
   placeholder:string;
   onPress?:()=>void;
+  value:string;
+  onChangeText: (text: string) => void;
 }
 
-const Search = ({placeholder,onPress}:props) => {
+const Search = ({placeholder,onPress,value,onChangeText }:props) => {
   const [searchValue, setSearchValue] = useState('');
 
   return (
@@ -37,8 +39,8 @@ const Search = ({placeholder,onPress}:props) => {
           <TextInput
             placeholder={placeholder}
             value={searchValue}
-          
-            onChangeText={setSearchValue}
+            onPress={onPress}
+            onChangeText={onChangeText}
             placeholderTextColor="#E9D5FF"
             style={{
               flex: 1,
@@ -48,7 +50,7 @@ const Search = ({placeholder,onPress}:props) => {
               paddingRight: 10,
             }}
           />
-          <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
+          <TouchableOpacity activeOpacity={0.7} >
             <Image
               source={icons.search}
               style={{
