@@ -25,6 +25,17 @@ export const fetchMovies=async ({query}:{query:string})=>{
 
 
 }
+export const fetchMovieDetails = async (id: string | number) => {
+  const endpoint = `${TMDB_CONFIG.BASE_URL}/movie/${id}?language=en-US`;
+
+  const res = await fetch(endpoint, {
+    method: 'GET',
+    headers: TMDB_CONFIG.headers,
+  });
+
+  if (!res.ok) throw new Error('Failed to fetch movie details');
+  return res.json();
+};
 
 
 // const url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc';
