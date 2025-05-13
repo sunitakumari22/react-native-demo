@@ -3,7 +3,7 @@ import { View, Text, Image, ScrollView, ActivityIndicator, TouchableOpacity } fr
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { fetchMovieDetails } from '@/services/api';
 import { images } from '@/constants/images';
-import { icons } from '@/constants/icons'; // Assuming this has a back icon
+import { icons } from '@/constants/icons';
 
 const MovieDetails = () => {
   const { id } = useLocalSearchParams();
