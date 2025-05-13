@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { icons } from '@/constants/icons';
-import { images } from '@/constants/images'; // Profile picture if available
+import { images } from '@/constants/images'; 
 import { useRouter } from 'expo-router';
 
 const Profile = () => {
@@ -9,16 +9,13 @@ const Profile = () => {
 
   return (
     <ScrollView style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Image source={icons.back} style={styles.backIcon} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Profile</Text>
-        <View style={{ width: 24 }} /> {/* For layout spacing */}
+        <View style={{ width: 24 }} /> 
       </View>
-
-      {/* Profile Info */}
       <View style={styles.profileSection}>
         <Image
           source={icons.person || { uri: 'https://placehold.co/100x100' }}
@@ -27,8 +24,6 @@ const Profile = () => {
         <Text style={styles.name}>John Doe</Text>
         <Text style={styles.bio}>Movie Enthusiast | Critic | Story Lover</Text>
       </View>
-
-      {/* Favorite Genres */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Favorite Genres</Text>
         <View style={styles.genreList}>
@@ -39,14 +34,10 @@ const Profile = () => {
           ))}
         </View>
       </View>
-
-      {/* Saved Movies */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Saved Movies</Text>
         <Text style={styles.sectionSubText}>Coming soon...</Text>
       </View>
-
-      {/* Logout / Settings */}
       <TouchableOpacity style={styles.logoutButton}>
         <Text style={styles.logoutText}>Log Out</Text>
       </TouchableOpacity>
