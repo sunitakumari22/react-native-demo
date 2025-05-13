@@ -1,27 +1,48 @@
-import { View, Text, Image, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, Image, FlatList, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { images } from '@/constants/images';
 import { useRouter } from 'expo-router';
-import useFetch from '@/services/useFetch';
 import { fetchMovies } from '@/services/api';
 import MovieCard from '@/components/MovieCard';
 import { icons } from '@/constants/icons';
 import Search from '@/components/Search';
 
-const search = () => {
+type Movie = {
+  id: number;
+  poster_path: string | null;
+  title: string;
+  vote_average: number;
+  release_date: string;
+};
+
+const SearchScreen = () => {
   const router = useRouter();
   const [inputText, setInputText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-
-  const {
-    data: movies,
-    loading,
-    error,
-  } = useFetch(() => fetchMovies({ query: searchQuery }));
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<any>(null);
 
   const handleSearch = () => {
     setSearchQuery(inputText);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await fetchMovies({ query: searchQuery });
+        setMovies(data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [searchQuery]);
 
   return (
     <View style={{ flex: 1, backgroundColor: '#0D0C1D', position: 'relative' }}>
@@ -31,50 +52,44 @@ const search = () => {
         resizeMode="cover"
       />
 
-      <FlatList
-        data={movies}
-        renderItem={({ item }) => <MovieCard {...item} />}
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={3}
-        columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 10 }}
-        contentContainerStyle={{ paddingBottom: 100 }}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
+      <View style={{ flex: 1, marginTop: 40, zIndex: 10, paddingHorizontal: 10 }}>
+        <View style={{ alignItems: 'center', marginBottom: 10 }}>
+          <Image source={icons.logo} style={{ width: 48, height: 40 }} />
+        </View>
+
+        <Search
+          onPress={handleSearch}
+          placeholder="Search for a movie"
+          value={inputText}
+          onChangeText={(text) => setInputText(text)}
+        />
+
+        {loading ? (
+          <ActivityIndicator size="large" color="#A259FF" style={{ marginTop: 30 }} />
+        ) : error ? (
+          <Text style={{ color: 'red', textAlign: 'center', marginTop: 20 }}>
+            Error: {error.message}
+          </Text>
+        ) : (
           <>
-            <View style={{ alignItems: 'center', marginTop: 20 }}>
-              <Image source={icons.logo} style={{ width: 48, height: 40 }} />
-            </View>
-            <View style={{ paddingHorizontal: 20, marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
-              <Search
-                placeholder="Search for movies..."
-                value={inputText}
-                onChangeText={(text: string) => setInputText(text)}
-              />
-              <TouchableOpacity onPress={handleSearch} style={{ marginLeft: 10 }}>
-                <Image source={icons.search} style={{ width: 24, height: 24, tintColor: 'white' }} />
-              </TouchableOpacity>
-            </View>
+            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold', marginTop: 20, marginBottom: 10 }}>
+              {searchQuery ? `Results for "${searchQuery}"` : 'Latest Movies'}
+            </Text>
 
-            {loading && (
-              <ActivityIndicator size="large" color="#0000ff" style={{ marginVertical: 16 }} />
-            )}
-
-            {error && (
-              <Text style={{ color: 'red', paddingHorizontal: 20, marginVertical: 10 }}>
-                Error: {error.message}
-              </Text>
-            )}
-
-            {!loading && !error && searchQuery.trim() && movies?.length > 0 && (
-              <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold', marginTop: 10, marginLeft: 10 }}>
-                Search Results for <Text style={{ color: '#FACC15' }}>{searchQuery}</Text>
-              </Text>
-            )}
+            <FlatList
+              data={movies}
+              renderItem={({ item }) => <MovieCard {...item} />}
+              keyExtractor={(item) => item.id.toString()}
+              numColumns={3}
+              columnWrapperStyle={{ justifyContent: 'space-between' }}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 100 }}
+            />
           </>
-        }
-      />
+        )}
+      </View>
     </View>
   );
 };
 
-export default search;
+export default SearchScreen;

@@ -30,7 +30,6 @@ const MovieCard = ({ id, poster_path, title, vote_average, release_date }: Movie
           <Text style={{ color: '#ccc', fontSize: 10 }}>
             ⭐ {vote_average} • {release_date?.slice(0, 4)}
           </Text>
-          
         </View>
       </TouchableOpacity>
     </Link>

@@ -1,18 +1,16 @@
 import { View, Image, TextInput, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import { icons } from '@/constants/icons';
 import { BlurView } from 'expo-blur';
 
-interface props{
-  placeholder:string;
-  onPress?:()=>void;
-  value:string;
+interface Props {
+  placeholder: string;
+  onPress?: () => void;
+  value: string;
   onChangeText: (text: string) => void;
 }
 
-const Search = ({placeholder,onPress,value,onChangeText }:props) => {
-  const [searchValue, setSearchValue] = useState('');
-
+const Search = ({ placeholder, onPress, value, onChangeText }: Props) => {
   return (
     <View className="w-full items-center px-6 mt-6 p-5">
       <BlurView
@@ -38,8 +36,7 @@ const Search = ({placeholder,onPress,value,onChangeText }:props) => {
         >
           <TextInput
             placeholder={placeholder}
-            value={searchValue}
-            onPress={onPress}
+            value={value}
             onChangeText={onChangeText}
             placeholderTextColor="#E9D5FF"
             style={{
@@ -50,7 +47,7 @@ const Search = ({placeholder,onPress,value,onChangeText }:props) => {
               paddingRight: 10,
             }}
           />
-          <TouchableOpacity activeOpacity={0.7} >
+          <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
             <Image
               source={icons.search}
               style={{
