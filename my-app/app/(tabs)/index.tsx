@@ -1,63 +1,61 @@
-import { View, Text, Image, ActivityIndicator, FlatList } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { images } from '@/constants/images';
 import { icons } from '@/constants/icons';
-import Search from '@/components/Search';
-import useFetch from '@/services/useFetch';
-import { fetchMovies } from '@/services/api';
-import MovieCard from '@/components/MovieCard';
 
 export default function Index() {
   const router = useRouter();
 
-  const {
-    data: movies,
-    loading: moviesLoading,
-    error: moviesError,
-  } = useFetch(() => fetchMovies({ query: '' }));
-
   return (
-    <View style={{ flex: 1, backgroundColor: '#0D0C1D', position: 'relative' }}>
-      <Image
-        source={images.bg}
-        style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 0 }}
-        resizeMode="cover"
-      />
+    <View style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
+      {/* Header */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#1E2A78', padding: 10 }}>
+        <TouchableOpacity>
+          <Image  style={{ width: 24, height: 24, tintColor: 'white' }} />
+        </TouchableOpacity>
+        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, marginLeft: 10 }}>Students</Text>
+        <View style={{ marginLeft: 'auto' }}>
+          <Image  style={{ width: 100, height: 30 }} resizeMode="contain" />
+        </View>
+      </View>
 
-      <View style={{ flex: 1, marginTop: 40, zIndex: 10, paddingHorizontal: 10 }}>
-        <View style={{ alignItems: 'center', marginBottom: 10 }}>
-          <Image source={icons.logo} style={{ width: 48, height: 40 }} />
+      <ScrollView contentContainerStyle={{ padding: 10 }}>
+        {/* Attendance Card */}
+        <View style={{ backgroundColor: '#FF6B6B', borderRadius: 8, padding: 15, marginBottom: 10 }}>
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>Sem 2 Attendance %</Text>
+          <Text style={{ fontSize: 26, fontWeight: 'bold', color: 'white' }}>78.36%</Text>
+          <Text style={{ color: '#FFF', fontSize: 12 }}>Attendance % based on credit papers only</Text>
+          <Text style={{ marginTop: 8, color: 'white', fontSize: 12, backgroundColor: 'rgba(255,255,255,0.2)', padding: 5, borderRadius: 4 }}>
+            *Attendance is being updated and it might not be accurate. Please contact your HoD to know your accurate attendance.
+          </Text>
         </View>
 
-        {moviesLoading ? (
-          <ActivityIndicator size="large" color="#A259FF" style={{ marginTop: 30 }} />
-        ) : moviesError ? (
-          <Text style={{ color: 'red', textAlign: 'center', marginTop: 20 }}>
-            Error: {moviesError.message}
-          </Text>
-        ) : (
-          <View style={{ flex: 1 }}>
-            <Search
-                  onPress={() => router.push('/search')}
-                  placeholder="Search for a movie" value={''} onChangeText={function (text: string): void {
-                    throw new Error('Function not implemented.');
-                  } }            />
+        {/* Fee Dues Card */}
+        <View style={{ backgroundColor: '#00AEEF', borderRadius: 8, padding: 15, marginBottom: 10 }}>
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>Fee Dues</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Rs. 0</Text>
+        </View>
 
-            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold', marginTop: 20, marginBottom: 10 }}>
-              Latest Movies
-            </Text>
+        {/* Upcoming Holidays Card */}
+        <View style={{ backgroundColor: '#8775F5', borderRadius: 8, padding: 15, marginBottom: 10 }}>
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>Upcoming Holidays</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>07-Jun-2025</Text>
+          <Text style={{ color: 'white', fontSize: 12 }}>Bakrid</Text>
+        </View>
 
-            <FlatList
-              data={movies}
-              renderItem={({ item }) => <MovieCard {...item} />}
-              keyExtractor={(item) => item.id.toString()}
-              numColumns={3}
-              columnWrapperStyle={{ justifyContent: 'space-between' }}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 100 }}
-            />
-          </View>
-        )}
+        {/* Exam Registration Card */}
+        <TouchableOpacity
+          style={{ backgroundColor: '#5F80E8', borderRadius: 8, padding: 15 }}
+          onPress={() => router.push('/')}
+        >
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>Examination Registration</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Download Card</Text>
+        </TouchableOpacity>
+      </ScrollView>
+
+      {/* Footer */}
+      <View style={{ alignItems: 'center', padding: 10 }}>
+        <Text style={{ fontSize: 12, color: '#777' }}>© Copyright 2023 - PyxisBlu. All rights reserved.</Text>
       </View>
     </View>
   );
